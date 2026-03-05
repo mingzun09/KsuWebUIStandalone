@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        toolbarTitle = findViewById(R.id.toolbar_title)
+        toolbarTitle = binding.toolbarTitle
 
         // Add insets
         ViewCompat.setOnApplyWindowInsetsListener(binding.appbar) { v, insets ->
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.nav_modules -> {
                     replaceFragment(ModulesFragment())
-                    toolbarTitle.text = getString(R.string.app_name)
+                    toolbarTitle.text = getString(R.string.auth)
                     true
                 }
                 R.id.nav_about -> {

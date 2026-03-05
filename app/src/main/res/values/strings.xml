@@ -12,6 +12,8 @@
     <string name="root_detector">Root Detector</string>
     <string name="system_compromised">System Compromised</string>
     <string name="abnormal_environment_detected">ABNORMAL ENVIRONMENT DETECTED</string>
+    <string name="system_secure">System Secure</string>
+    <string name="all_checks_passed">ALL INTEGRITY CHECKS PASSED</string>
     <string name="integrity_checks">Integrity Checks</string>
 
     <string name="magisk_su_found">Magisk SU found</string>

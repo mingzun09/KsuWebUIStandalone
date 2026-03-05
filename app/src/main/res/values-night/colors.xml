@@ -21,6 +21,12 @@
     <color name="status_active">#f87171</color> <!-- red-400 -->
     <color name="status_secure">#34d399</color> <!-- emerald-400 -->
 
+    <!-- Emerald for status (Dark Mode) -->
+    <color name="status_secure_bg">#022c22</color> <!-- emerald-950/10ish -->
+    <color name="status_secure_icon_bg">#064e3b</color> <!-- emerald-900/30 -->
+    <color name="status_secure_text">#d1fae5</color> <!-- emerald-100 -->
+    <color name="status_secure_subtext">#34d399</color> <!-- emerald-400 -->
+
     <color name="card_background">#1f2937</color>
     <color name="card_inner_background">#000000</color> <!-- black/20 -->
 </resources>
