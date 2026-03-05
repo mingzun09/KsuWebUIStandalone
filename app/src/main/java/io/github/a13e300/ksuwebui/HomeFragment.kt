@@ -1,5 +1,6 @@
 package io.github.a13e300.ksuwebui
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,12 +28,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val magiskFound = RootCheckUtil.isMagiskSuFound()
+        val systemModified = RootCheckUtil.isSystemPartitionModified()
+        val usbDebugging = RootCheckUtil.isUsbDebuggingEnabled(requireContext())
+        val bootloaderLocked = RootCheckUtil.isBootloaderLocked()
+
         setupIntegrityCheck(
             binding.checkMagisk.root,
             getString(R.string.magisk_su_found),
             getString(R.string.detected),
             getString(R.string.magisk_su_desc),
-            RootCheckUtil.isMagiskSuFound()
+            !magiskFound
         )
 
         setupIntegrityCheck(
@@ -40,7 +46,7 @@ class HomeFragment : Fragment() {
             getString(R.string.system_partition_modified),
             getString(R.string.detected),
             getString(R.string.system_partition_desc),
-            RootCheckUtil.isSystemPartitionModified()
+            !systemModified
         )
 
         setupIntegrityCheck(
@@ -48,19 +54,18 @@ class HomeFragment : Fragment() {
             getString(R.string.usb_debugging_enabled),
             getString(R.string.active),
             getString(R.string.usb_debugging_desc),
-            RootCheckUtil.isUsbDebuggingEnabled(requireContext())
+            !usbDebugging
         )
 
-        val bootloaderLocked = RootCheckUtil.isBootloaderLocked()
         setupIntegrityCheck(
             binding.checkBootloader.root,
             getString(R.string.bootloader_status),
-            if (bootloaderLocked) getString(R.string.secure) else getString(R.string.detected),
+            getString(R.string.detected),
             getString(R.string.bootloader_desc),
-            !bootloaderLocked,
-            statusColor = if (bootloaderLocked) R.color.status_secure else R.color.status_detected,
-            iconRes = if (bootloaderLocked) R.drawable.ic_check_circle else R.drawable.ic_cancel
+            bootloaderLocked
         )
+
+        updateStatusCard(magiskFound || systemModified || usbDebugging || !bootloaderLocked)
 
         binding.deviceModel.text = RootCheckUtil.getModel()
         binding.kernelVersion.text = RootCheckUtil.getKernelVersion()
@@ -71,11 +76,9 @@ class HomeFragment : Fragment() {
     private fun setupIntegrityCheck(
         root: View,
         title: String,
-        status: String,
+        badStatusLabel: String,
         description: String,
-        isDetected: Boolean,
-        statusColor: Int? = null,
-        iconRes: Int? = null
+        isGood: Boolean
     ) {
         val titleView = root.findViewById<TextView>(R.id.title)
         val statusView = root.findViewById<TextView>(R.id.status)
@@ -86,15 +89,17 @@ class HomeFragment : Fragment() {
         val expandIcon = root.findViewById<ImageView>(R.id.expand_icon)
 
         titleView.text = title
-        statusView.text = status
         descView.text = description
 
-        val finalStatusColor = statusColor ?: if (isDetected) R.color.status_detected else R.color.status_secure
-        val finalIconRes = iconRes ?: if (isDetected) R.drawable.ic_cancel else R.drawable.ic_check_circle
+        statusView.text = if (isGood) getString(R.string.secure) else badStatusLabel
 
-        statusView.setTextColor(resources.getColor(finalStatusColor, null))
-        iconView.setImageResource(finalIconRes)
-        iconView.setColorFilter(resources.getColor(finalStatusColor, null))
+        val statusColorRes = if (isGood) R.color.status_secure else R.color.status_detected
+        val iconRes = if (isGood) R.drawable.ic_check_circle else R.drawable.ic_cancel
+
+        val color = resources.getColor(statusColorRes, null)
+        statusView.setTextColor(color)
+        iconView.setImageResource(iconRes)
+        iconView.setColorFilter(color)
 
         summary.setOnClickListener {
             if (details.visibility == View.VISIBLE) {
@@ -104,6 +109,28 @@ class HomeFragment : Fragment() {
                 details.visibility = View.VISIBLE
                 expandIcon.animate().rotation(180f).start()
             }
+        }
+    }
+
+    private fun updateStatusCard(isCompromised: Boolean) {
+        if (isCompromised) {
+            binding.statusCard.setCardBackgroundColor(resources.getColor(R.color.status_compromised_bg, null))
+            binding.statusIconContainer.setCardBackgroundColor(resources.getColor(R.color.status_compromised_icon_bg, null))
+            binding.statusIcon.setImageResource(R.drawable.ic_warning)
+            binding.statusIcon.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.status_compromised_subtext, null))
+            binding.statusTitle.text = getString(R.string.system_compromised)
+            binding.statusTitle.setTextColor(resources.getColor(R.color.status_compromised_text, null))
+            binding.statusSubtitle.text = getString(R.string.abnormal_environment_detected)
+            binding.statusSubtitle.setTextColor(resources.getColor(R.color.status_compromised_subtext, null))
+        } else {
+            binding.statusCard.setCardBackgroundColor(resources.getColor(R.color.status_secure_bg, null))
+            binding.statusIconContainer.setCardBackgroundColor(resources.getColor(R.color.status_secure_icon_bg, null))
+            binding.statusIcon.setImageResource(R.drawable.ic_check_circle)
+            binding.statusIcon.imageTintList = ColorStateList.valueOf(resources.getColor(R.color.status_secure_subtext, null))
+            binding.statusTitle.text = getString(R.string.system_secure)
+            binding.statusTitle.setTextColor(resources.getColor(R.color.status_secure_text, null))
+            binding.statusSubtitle.text = getString(R.string.all_checks_passed)
+            binding.statusSubtitle.setTextColor(resources.getColor(R.color.status_secure_subtext, null))
         }
     }
 

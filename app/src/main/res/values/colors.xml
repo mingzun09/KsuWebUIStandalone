@@ -21,6 +21,12 @@
     <color name="status_active">#dc2626</color> <!-- red-600 -->
     <color name="status_secure">#059669</color> <!-- emerald-600 -->
 
+    <!-- Emerald for status -->
+    <color name="status_secure_bg">#ecfdf5</color> <!-- emerald-50 -->
+    <color name="status_secure_icon_bg">#d1fae5</color> <!-- emerald-100 -->
+    <color name="status_secure_text">#064e3b</color> <!-- emerald-900 -->
+    <color name="status_secure_subtext">#059669</color> <!-- emerald-600 -->
+
     <color name="card_background">#ffffff</color>
     <color name="card_inner_background">#f9fafb</color> <!-- white/50 on light? maybe gray-50 -->
 </resources>
