@@ -7,4 +7,38 @@
     <string name="author">Author: %s</string>
     <string name="version">Version: %s</string>
     <string name="show_disabled">Show Disabled</string>
+
+    <!-- Root Detector -->
+    <string name="root_detector">Root Detector</string>
+    <string name="system_compromised">System Compromised</string>
+    <string name="abnormal_environment_detected">ABNORMAL ENVIRONMENT DETECTED</string>
+    <string name="integrity_checks">Integrity Checks</string>
+
+    <string name="magisk_su_found">Magisk SU found</string>
+    <string name="magisk_su_desc">The su binary was detected in common system paths. This indicates that your device has been granted root access via Magisk or a similar utility.</string>
+
+    <string name="system_partition_modified">System partition modified</string>
+    <string name="system_partition_desc">Verified boot (AVB) integrity check failed. The system partition does not match the manufacturer\'s original digital signature.</string>
+
+    <string name="usb_debugging_enabled">USB Debugging enabled</string>
+    <string name="usb_debugging_desc">ADB debugging is currently active in Developer Options. This potentially allows unauthorized external access to device data.</string>
+
+    <string name="bootloader_status">Bootloader status</string>
+    <string name="bootloader_desc">The device bootloader is locked. No unauthorized kernels or recovery partitions can be flashed to the device in this state.</string>
+
+    <string name="detected">DETECTED</string>
+    <string name="active">ACTIVE</string>
+    <string name="secure">SECURE</string>
+
+    <string name="device_information">Device Information</string>
+    <string name="model">Model</string>
+    <string name="kernel">Kernel</string>
+    <string name="system_version">System Version</string>
+    <string name="android_version">Android Version %s</string>
+    <string name="security_patch">Security Patch</string>
+
+    <!-- Navigation -->
+    <string name="home">Home</string>
+    <string name="auth">Auth</string>
+    <string name="about">About</string>
 </resources>
